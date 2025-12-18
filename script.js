@@ -4,6 +4,11 @@ const premio = document.querySelector(".premio");
 const mensaje = document.getElementById("mensaje");
 const inicioAudio = document.getElementById("inicioAudio");
 
+// 🔒 Evitar scroll al raspar (MÓVIL)
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+}, { passive: false });
+
 // 🔊 Sonidos
 const sonidoRaspar = new Audio("scratch.mp3");
 sonidoRaspar.loop = true;
@@ -14,7 +19,7 @@ sonidoGanar.volume = 0.7;
 
 let audioHabilitado = false;
 
-// 👉 Desbloqueo de audio (OBLIGATORIO para celular)
+// 👉 Desbloqueo de audio (obligatorio en móvil)
 function desbloquearAudio() {
   if (audioHabilitado) return;
 
@@ -35,7 +40,7 @@ let terminado = false;
 let premioRevelado = false;
 let puntosRaspado = 0;
 
-// 👉 BLOQUEO SI YA SE USÓ
+// 👉 Bloqueo si ya se usó
 if (localStorage.getItem("raspa_gana_usado")) {
   canvas.style.display = "none";
   mensaje.style.display = "block";
@@ -43,7 +48,7 @@ if (localStorage.getItem("raspa_gana_usado")) {
   terminado = true;
 }
 
-// Ajustar canvas
+// Ajustar canvas al tamaño de la imagen
 premio.onload = () => {
   canvas.width = premio.offsetWidth;
   canvas.height = premio.offsetHeight;
@@ -57,7 +62,7 @@ premio.onload = () => {
   };
 };
 
-// 🎨 Raspar
+// 🎨 Función de raspar
 function raspar(x, y) {
   if (terminado) return;
 
@@ -76,6 +81,7 @@ function raspar(x, y) {
 canvas.addEventListener("mousedown", () => {
   if (terminado || !audioHabilitado) return;
   raspando = true;
+  sonidoRaspar.currentTime = 0;
   sonidoRaspar.play();
 });
 
@@ -92,8 +98,40 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 // 📱 Touch
-canvas.addEventListener("touchstart", (e) => {
+canvas.addEventListener("touchstart", () => {
   if (terminado || !audioHabilitado) return;
   raspando = true;
+  sonidoRaspar.currentTime = 0;
   sonidoRaspar.play();
 });
+
+canvas.addEventListener("touchmove", (e) => {
+  if (!raspando) return;
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  raspar(touch.clientX - rect.left, touch.clientY - rect.top);
+});
+
+canvas.addEventListener("touchend", () => {
+  raspando = false;
+  sonidoRaspar.pause();
+  sonidoRaspar.currentTime = 0;
+});
+
+// 🎉 Revelar premio
+function revelarPremio() {
+  if (premioRevelado) return;
+  premioRevelado = true;
+
+  sonidoRaspar.pause();
+  sonidoRaspar.currentTime = 0;
+  sonidoGanar.currentTime = 0;
+  sonidoGanar.play();
+
+  mensaje.style.display = "block";
+
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200]);
+  }
+
+  localStorage.setItem("
