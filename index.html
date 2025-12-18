@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Raspa y Gana</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Acceso Raspa y Gana 5K</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h2>Ingresa tu nombre y código para acceder al Raspa y Gana </h2>
 
-  <h2>Ingresa tu nombre y código</h2>
-
-  <form id="formCodigo">
-    <input type="text" id="nombre" placeholder="Tu nombre" required>
-    <input type="text" id="codigo" placeholder="Código del bono" required>
-    <button type="submit">Continuar</button>
+  <form id="formulario" action="raspa-5k.html" method="get">
+    <label>
+      Nombre:<br>
+      <input type="text" name="nombre" required>
+    </label>
+    <br><br>
+    <label>
+      Código:<br>
+      <input type="text" name="codigo" required>
+    </label>
+    <br><br>
+    <button type="submit">Ver bono 🎟️</button>
   </form>
 
-  <p id="error" style="color:red;"></p>
-
-  <script src="js/form.js"></script>
 </body>
 </html>
+
+
