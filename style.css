@@ -1,7 +1,59 @@
+/* ============================= */
+/* FORMULARIO / TEXTO ACCESO */
+/* ============================= */
+
+body {
+  background-color: #000;
+  color: white;
+}
+
+/* Título */
+h2 {
+  margin-bottom: 45px;
+  line-height: 1.4;
+}
+
+/* Labels en bold + aire */
+label {
+  display: block;
+  margin-bottom: 28px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Inputs con más respiración */
+input[type="text"] {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 80%;
+  max-width: 300px;
+}
+
+/* Botón */
+button {
+  margin-top: 10px;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Estrellas cierre visual */
+.estrellas {
+  margin-top: 65px;
+  font-size: 14px;
+  letter-spacing: 3px;
+  opacity: 0.7;
+}
+
+
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #f7f3f1;
+ 
 }
 
 h2 {
@@ -61,6 +113,7 @@ canvas {
   color: #333;
   z-index: 6;
 }
+
 
 
 
