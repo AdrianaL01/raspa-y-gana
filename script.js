@@ -23,16 +23,17 @@ let audioHabilitado = false;
 function desbloquearAudio() {
   if (audioHabilitado) return;
 
+  audioHabilitado = true; // 🔓 desbloquea el juego SIEMPRE
+  inicioAudio.style.display = "none";
+
+  // Intentar habilitar audio (si el navegador lo permite)
   sonidoGanar.play().then(() => {
     sonidoGanar.pause();
     sonidoGanar.currentTime = 0;
-    audioHabilitado = true;
-    inicioAudio.style.display = "none";
   }).catch(() => {
-    alert("Toca de nuevo para activar el sonido 🔊");
+    // Si falla, NO pasa nada. El juego sigue.
   });
 }
-
 
 inicioAudio.addEventListener("click", desbloquearAudio);
 inicioAudio.addEventListener("touchstart", desbloquearAudio);
@@ -138,4 +139,5 @@ function revelarPremio() {
   }
 
   localStorage.setItem("
+
 
