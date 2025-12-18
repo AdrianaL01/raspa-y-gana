@@ -19,6 +19,7 @@ h2 {
 .premio {
   width: 100%;
   display: block;
+  visibility: hidden; /* 🔒 OCULTO AL CARGAR */
 }
 
 /* Canvas raspable */
@@ -60,5 +61,6 @@ canvas {
   color: #333;
   z-index: 6;
 }
+
 
 
