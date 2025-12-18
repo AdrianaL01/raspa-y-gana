@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acceso Raspa y Gana 5K</title>
   <link rel="stylesheet" href="style.css">
- <style>
+<style>
   body {
     background-color: #000;
     color: white;
@@ -16,17 +16,26 @@
 
   h2 {
     font-size: 20px;
-    margin-bottom: 45px;
-    line-height: 1.4;
+    margin-bottom: 30px; /* menos espacio */
+    line-height: 1.35;
+  }
+
+  h2 span {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: normal;
+    opacity: 0.8;
+    letter-spacing: 0.5px;
   }
 
   form {
-    margin-top: 20px;
+    margin-top: 10px; /* más compacto */
   }
 
   label {
     display: block;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
     font-size: 16px;
     font-weight: bold;
   }
@@ -50,7 +59,7 @@
     padding: 12px 24px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 8px;
   }
 
   button:hover {
@@ -58,16 +67,18 @@
   }
 
   .estrellas {
-    margin-top: 65px;
-    font-size: 14px;
+    margin-top: 55px;
+    font-size: 16px; /* un poco más grandes */
     letter-spacing: 3px;
     opacity: 0.7;
   }
 </style>
 
+
 </head>
 <body>
-  <h2>INGRESA TU NOMBRE Y CÓDIGO PARA ACCEDER AL RASPA Y GANA </h2>
+  <h2>INGRESA TU NOMBRE Y CÓDIGO <br>
+   <span> PARA ACCEDER AL RASPA Y GANA </span></h2>
 
   <form id="formulario" action="raspa-5k.html" method="get">
     <label>
@@ -85,5 +96,6 @@
   <div class="estrellas">★★★★★★★★★★★★★★★★★★★★★</div>
 </body>
 </html>
+
 
 
