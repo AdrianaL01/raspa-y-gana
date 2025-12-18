@@ -4,26 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Raspa y Gana</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <h2>Raspa para descubrir tu bono</h2>
+  <h2>Ingresa tu nombre y código</h2>
 
-  <div class="contenedor">
-    <img src="bono1.jpg" class="premio">
+  <form id="formCodigo">
+    <input type="text" id="nombre" placeholder="Tu nombre" required>
+    <input type="text" id="codigo" placeholder="Código del bono" required>
+    <button type="submit">Continuar</button>
+  </form>
 
-    <div id="inicioAudio">
-  👉 Toca aquí para empezar
-</div>
+  <p id="error" style="color:red;"></p>
 
-    <canvas id="canvas"></canvas>
-
-    <div id="mensaje">
-      🎉 ¡Este es tu bono! Guárdalo y enviame captura de tu premio 🎉
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+  <script src="js/form.js"></script>
 </body>
 </html>
