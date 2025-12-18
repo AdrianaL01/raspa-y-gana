@@ -30,10 +30,10 @@ const nombre = params.get('nombre');
 const codigo = params.get('codigo');
 
 const codigosValidos = [
-  "ABC123","DEF456","GHI789","JKL012","MNO345",
-  "PQR678","STU901","VWX234","YZA567","BCD890",
-  "EFG123","HIJ456","KLM789","NOP012","QRS345",
-  "TUV678","WXY901","ZAB234","CDE567","FGH890"
+  "5K-A7F3","5K-B92Q","5K-LM8X","5K-Q3RZ","5K-W4P7",
+  "5K-X9V2","5K-T5J8","5K-KL3P","5K-Z7N1","5K-V8M4",
+  "5K-R6C9","5K-F2B5","5K-P3D8","5K-N9H1","5K-S4Q6",
+  "5K-J8K2","5K-M5L7","5K-H2G9","5K-D7T3","5K-C9R6"
 ];
 
 if (!nombre || !codigo || !codigosValidos.includes(codigo)) {
@@ -162,3 +162,4 @@ function revelarPremio(){
 
   setTimeout(()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); },400);
 }
+
