@@ -10,9 +10,11 @@ h2 {
 
 .contenedor {
   position: relative;
-  width: 320px;
+  width: 90vw;        /* 90% del ancho del celular */
+  max-width: 420px;  /* límite en computador */
   margin: auto;
 }
+
 
 .premio {
   width: 100%;
@@ -31,3 +33,4 @@ canvas {
   font-size: 16px;
   color: #333;
 }
+
