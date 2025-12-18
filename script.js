@@ -23,13 +23,16 @@ let audioHabilitado = false;
 function desbloquearAudio() {
   if (audioHabilitado) return;
 
-  sonidoRaspar.play().then(() => {
-    sonidoRaspar.pause();
-    sonidoRaspar.currentTime = 0;
+  sonidoGanar.play().then(() => {
+    sonidoGanar.pause();
+    sonidoGanar.currentTime = 0;
     audioHabilitado = true;
     inicioAudio.style.display = "none";
-  }).catch(() => {});
+  }).catch(() => {
+    alert("Toca de nuevo para activar el sonido 🔊");
+  });
 }
+
 
 inicioAudio.addEventListener("click", desbloquearAudio);
 inicioAudio.addEventListener("touchstart", desbloquearAudio);
@@ -135,3 +138,4 @@ function revelarPremio() {
   }
 
   localStorage.setItem("
+
