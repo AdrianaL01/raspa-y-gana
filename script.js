@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const premio = document.querySelector(".premio");
+const premioImg = document.querySelector(".premio");
 const mensaje = document.getElementById("mensaje");
 const inicioAudio = document.getElementById("inicioAudio");
 
@@ -24,7 +24,40 @@ let terminado = false;
 let puntosRaspado = 0;
 let premioRevelado = false;
 
-// 🔓 Desbloqueo de audio (NO raspa, NO suma puntos)
+// ===============================
+// 🎟️ PREMIOS BONO 5K
+// ===============================
+const premios5kInicial = [
+  ...Array(12).fill({ nombre: "20%", imagen: "bono20.jpg" }),
+  ...Array(6).fill({ nombre: "2x1", imagen: "bono2x1.jpg" }),
+  ...Array(12).fill({ nombre: "nada", imagen: "bono0.jpg" })
+];
+
+// Cargar premios restantes
+let premiosDisponibles = JSON.parse(localStorage.getItem("premios_5k"));
+if (!premiosDisponibles) {
+  premiosDisponibles = [...premios5kInicial];
+  localStorage.setItem("premios_5k", JSON.stringify(premiosDisponibles));
+}
+
+// Elegir premio aleatorio (una sola vez)
+function elegirPremio() {
+  const index = Math.floor(Math.random() * premiosDisponibles.length);
+  const premioElegido = premiosDisponibles[index];
+
+  premiosDisponibles.splice(index, 1);
+  localStorage.setItem("premios_5k", JSON.stringify(premiosDisponibles));
+
+  return premioElegido;
+}
+
+const premioAsignado = elegirPremio();
+premioImg.src = premioAsignado.imagen;
+premioImg.style.visibility = "hidden";
+
+// ===============================
+// 🔓 Desbloqueo de audio
+// ===============================
 function desbloquearAudio() {
   if (audioHabilitado) return;
 
@@ -48,18 +81,17 @@ if (localStorage.getItem("raspa_gana_usado")) {
 }
 
 // Ajustar canvas
-premio.onload = () => {
-  canvas.width = premio.offsetWidth;
-  canvas.height = premio.offsetHeight;
+premioImg.onload = () => {
+  canvas.width = premioImg.offsetWidth;
+  canvas.height = premioImg.offsetHeight;
 
   if (terminado) return;
 
   const capa = new Image();
   capa.src = "raspable1.png";
   capa.onload = () => {
-   ctx.drawImage(capa, 0, 0, canvas.width, canvas.height);
-premio.style.visibility = "visible"; // 👀 ahora sí se muestra
-
+    ctx.drawImage(capa, 0, 0, canvas.width, canvas.height);
+    premioImg.style.visibility = "visible";
   };
 };
 
@@ -74,7 +106,6 @@ function raspar(x, y) {
 
   puntosRaspado++;
 
-  // 👇 UMBRAL REALISTA (no se dispara con 1 toque)
   if (puntosRaspado > 90) {
     revelarPremio();
   }
@@ -121,7 +152,7 @@ canvas.addEventListener("touchmove", e => {
   raspar(touch.clientX - rect.left, touch.clientY - rect.top);
 });
 
-// 🎉 Revelar premio (SOLO AQUÍ SUENA WIN)
+// 🎉 Revelar premio
 function revelarPremio() {
   if (premioRevelado) return;
   premioRevelado = true;
@@ -138,11 +169,10 @@ function revelarPremio() {
   if (navigator.vibrate) {
     navigator.vibrate([200, 100, 200]);
   }
+
   localStorage.setItem("raspa_gana_usado", "true");
 
   setTimeout(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 400);
 }
-
-
