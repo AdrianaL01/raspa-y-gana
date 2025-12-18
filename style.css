@@ -10,7 +10,7 @@ h2 {
 
 .contenedor {
   position: relative;
-  width: 90vw;        /* 90% del ancho del celular */
+  width: 95vw;        /* 95% del ancho del celular */
   max-width: 420px;  /* límite en computador */
   margin: auto;
 }
@@ -33,4 +33,3 @@ canvas {
   font-size: 16px;
   color: #333;
 }
-

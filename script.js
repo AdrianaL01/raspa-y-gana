@@ -11,6 +11,19 @@ sonidoRaspar.volume = 0.4;
 const sonidoGanar = new Audio("win.mp3");
 sonidoGanar.volume = 0.7;
 
+let audioHabilitado = false;
+
+function habilitarAudio() {
+  if (audioHabilitado) return;
+
+  sonidoRaspar.play().then(() => {
+    sonidoRaspar.pause();
+    sonidoRaspar.currentTime = 0;
+    audioHabilitado = true;
+  }).catch(() => {});
+}
+
+
 // Estados
 let raspando = false;
 let terminado = false;
@@ -57,9 +70,11 @@ function raspar(x, y) {
 // Mouse
 canvas.addEventListener("mousedown", () => {
   if (terminado) return;
+  habilitarAudio();
   raspando = true;
   sonidoRaspar.play();
 });
+
 
 canvas.addEventListener("mouseup", () => {
   raspando = false;
@@ -76,9 +91,11 @@ canvas.addEventListener("mousemove", (e) => {
 // Touch
 canvas.addEventListener("touchstart", () => {
   if (terminado) return;
+  habilitarAudio();
   raspando = true;
   sonidoRaspar.play();
 });
+
 
 canvas.addEventListener("touchend", () => {
   raspando = false;
@@ -97,7 +114,10 @@ canvas.addEventListener("touchmove", (e) => {
 function revelarPremio() {
   premioRevelado = true;
 
+  if (audioHabilitado) {
   sonidoGanar.play();
+}
+
   mensaje.style.display = "block";
 
   if (navigator.vibrate) {
