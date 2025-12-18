@@ -4,8 +4,8 @@ const premio = document.querySelector(".premio");
 const mensaje = document.getElementById("mensaje");
 const inicioAudio = document.getElementById("inicioAudio");
 
-// 🔒 Evitar scroll al raspar (MÓVIL)
-canvas.addEventListener("touchmove", (e) => {
+// Evitar scroll en móvil
+canvas.addEventListener("touchmove", e => {
   e.preventDefault();
 }, { passive: false });
 
@@ -17,42 +17,37 @@ sonidoRaspar.volume = 0.4;
 const sonidoGanar = new Audio("win.mp3");
 sonidoGanar.volume = 0.7;
 
+// Estados
 let audioHabilitado = false;
+let raspando = false;
+let terminado = false;
+let puntosRaspado = 0;
+let premioRevelado = false;
 
-// 👉 Desbloqueo de audio (obligatorio en móvil)
+// 🔓 Desbloqueo de audio (NO raspa, NO suma puntos)
 function desbloquearAudio() {
   if (audioHabilitado) return;
 
-  audioHabilitado = true; // 🔓 desbloquea el juego SIEMPRE
-  inicioAudio.style.display = "none";
-
-  // Intentar habilitar audio (si el navegador lo permite)
-  sonidoGanar.play().then(() => {
-    sonidoGanar.pause();
-    sonidoGanar.currentTime = 0;
-  }).catch(() => {
-    // Si falla, NO pasa nada. El juego sigue.
-  });
+  sonidoRaspar.play().then(() => {
+    sonidoRaspar.pause();
+    sonidoRaspar.currentTime = 0;
+    audioHabilitado = true;
+    inicioAudio.style.display = "none";
+  }).catch(() => {});
 }
 
 inicioAudio.addEventListener("click", desbloquearAudio);
 inicioAudio.addEventListener("touchstart", desbloquearAudio);
 
-// Estados
-let raspando = false;
-let terminado = false;
-let premioRevelado = false;
-let puntosRaspado = 0;
-
-// 👉 Bloqueo si ya se usó
+// Bloqueo si ya se usó
 if (localStorage.getItem("raspa_gana_usado")) {
   canvas.style.display = "none";
-  mensaje.style.display = "block";
+  mensaje.style.display = "flex";
   mensaje.innerText = "🎟️ Este bono ya fue revelado";
   terminado = true;
 }
 
-// Ajustar canvas al tamaño de la imagen
+// Ajustar canvas
 premio.onload = () => {
   canvas.width = premio.offsetWidth;
   canvas.height = premio.offsetHeight;
@@ -66,24 +61,26 @@ premio.onload = () => {
   };
 };
 
-// 🎨 Función de raspar
+// 🎨 Raspar
 function raspar(x, y) {
-  if (terminado) return;
+  if (terminado || premioRevelado) return;
 
   ctx.globalCompositeOperation = "destination-out";
   ctx.beginPath();
   ctx.arc(x, y, 22, 0, Math.PI * 2);
   ctx.fill();
 
-  if (!premioRevelado) {
-    puntosRaspado++;
-    if (puntosRaspado > 120) revelarPremio();
+  puntosRaspado++;
+
+  // 👇 UMBRAL REALISTA (no se dispara con 1 toque)
+  if (puntosRaspado > 140) {
+    revelarPremio();
   }
 }
 
 // 🖱️ Mouse
 canvas.addEventListener("mousedown", () => {
-  if (terminado || !audioHabilitado) return;
+  if (!audioHabilitado || terminado) return;
   raspando = true;
   sonidoRaspar.currentTime = 0;
   sonidoRaspar.play();
@@ -95,7 +92,7 @@ canvas.addEventListener("mouseup", () => {
   sonidoRaspar.currentTime = 0;
 });
 
-canvas.addEventListener("mousemove", (e) => {
+canvas.addEventListener("mousemove", e => {
   if (!raspando) return;
   const rect = canvas.getBoundingClientRect();
   raspar(e.clientX - rect.left, e.clientY - rect.top);
@@ -103,17 +100,10 @@ canvas.addEventListener("mousemove", (e) => {
 
 // 📱 Touch
 canvas.addEventListener("touchstart", () => {
-  if (terminado || !audioHabilitado) return;
+  if (!audioHabilitado || terminado) return;
   raspando = true;
   sonidoRaspar.currentTime = 0;
   sonidoRaspar.play();
-});
-
-canvas.addEventListener("touchmove", (e) => {
-  if (!raspando) return;
-  const rect = canvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  raspar(touch.clientX - rect.left, touch.clientY - rect.top);
 });
 
 canvas.addEventListener("touchend", () => {
@@ -122,22 +112,31 @@ canvas.addEventListener("touchend", () => {
   sonidoRaspar.currentTime = 0;
 });
 
-// 🎉 Revelar premio
+canvas.addEventListener("touchmove", e => {
+  if (!raspando) return;
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  raspar(touch.clientX - rect.left, touch.clientY - rect.top);
+});
+
+// 🎉 Revelar premio (SOLO AQUÍ SUENA WIN)
 function revelarPremio() {
   if (premioRevelado) return;
   premioRevelado = true;
+  terminado = true;
 
   sonidoRaspar.pause();
   sonidoRaspar.currentTime = 0;
-  sonidoGanar.currentTime = 0;
-  sonidoGanar.play();
 
-  mensaje.style.display = "block";
-
-  if (navigator.vibrate) {
-    navigator.vibrate([200, 100, 200]);
+  if (audioHabilitado) {
+    sonidoGanar.currentTime = 0;
+    sonidoGanar.play();
   }
 
-  localStorage.setItem("
+  mensaje.style.display = "flex";
+  localStorage.setItem("raspa_gana_usado", "true");
 
-
+  setTimeout(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, 400);
+}
