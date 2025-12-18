@@ -73,7 +73,7 @@ function raspar(x, y) {
   puntosRaspado++;
 
   // 👇 UMBRAL REALISTA (no se dispara con 1 toque)
-  if (puntosRaspado > 140) {
+  if (puntosRaspado > 90) {
     revelarPremio();
   }
 }
@@ -133,10 +133,13 @@ function revelarPremio() {
     sonidoGanar.play();
   }
 
-  mensaje.style.display = "flex";
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200]);
+  }
   localStorage.setItem("raspa_gana_usado", "true");
 
   setTimeout(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 400);
 }
+
