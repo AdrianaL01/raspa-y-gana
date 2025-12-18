@@ -57,7 +57,9 @@ premio.onload = () => {
   const capa = new Image();
   capa.src = "raspable1.png";
   capa.onload = () => {
-    ctx.drawImage(capa, 0, 0, canvas.width, canvas.height);
+   ctx.drawImage(capa, 0, 0, canvas.width, canvas.height);
+premio.style.visibility = "visible"; // 👀 ahora sí se muestra
+
   };
 };
 
@@ -142,4 +144,5 @@ function revelarPremio() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 400);
 }
+
 
